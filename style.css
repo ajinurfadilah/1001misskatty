@@ -1,0 +1,469 @@
+
+  *{box-sizing:border-box;margin:0;padding:0}  
+  body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  
+  font-family: sans-serif;
+  color: #fff;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  touch-action: manipulation;
+  transition: background 0.4s ease, color 0.4s ease;
+
+  
+}
+  .deck{position:relative;width:240px;height:340px;perspective:1200px;}
+
+#categoryPanel {
+  display: flex;
+  flex-direction: column;     /* Judul tetap di atas */
+  align-items: center;        
+  gap: 20px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+#judul {
+  text-align: center;
+  font-weight: bold;
+  border: 2px dashed  white;
+  padding: 20px;
+  border-radius: 15px;
+}
+#judul h1{
+  color: white;
+  font-size: 1.5rem;
+}
+#judul p{
+  color: orange;
+}
+
+#categoryPanel .categoryBtn {
+  padding: 10px 20px;
+  font-size: 16px;
+  margin: 5px;
+  max-width: 200px;           /* Batas lebar biar tombol ga kepanjangan */
+  white-space: normal;        /* Biar teks panjang bisa turun baris */
+  word-wrap: break-word;      /* Potong kata kalau terlalu panjang */
+}
+
+#categoryPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.levelBtn, .modeChange, #showAllBtn {
+  padding: 8px 15px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 8px;
+  background: #374151; /* default abu */
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.5s ease;
+}
+.modeChange{
+  background: green!important;
+}
+.levelBtn.active {
+  background: orange;
+  transform: scale(1.1);
+}
+
+.btnGroupKelola .btnGroup {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.5s ease;
+}
+
+.btnGroupKelola{
+  background-color: #2C2C2C;
+  margin: 20px;
+  margin-top: 0px;
+  padding: 15px 5px;
+  border: 2px solid white;
+  border-radius: 15px;
+}
+
+.btnGroupKelola p{
+  color: white;
+  text-align: center;
+  margin-bottom: 15px;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+#categoryPanel .btnGroup {
+  display: flex;
+  flex-wrap: wrap;            /* Tombol bisa pindah baris */
+  justify-content: center;    /* Tengah */
+  gap: 10px;
+}
+
+.card{
+position:absolute;left:0;top:0;width:100%;height:100%;
+border-radius:15px;cursor:pointer;
+transition:transform 0.6s ease,opacity 0.6s ease;
+transform-style:preserve-3d;
+z-index:1;
+}
+
+.card-inner{
+position:relative;width:100%;height:100%;
+transition:transform 0.6s;transform-style:preserve-3d;
+border-radius:15px;box-shadow:0 12px 25px rgba(0,0,0,0.45);
+}
+.card.flipped .card-inner{ transform:rotateY(180deg); }
+
+.card-face{
+position:absolute;top:0;left:0;width:100%;height:100%;
+backface-visibility:hidden;border-radius:15px;
+display:flex;align-items:center;justify-content:center;
+padding:1rem;text-align:center;
+font-size:1.7rem;font-weight:600;
+/*font-size:1.2rem;font-weight:600;*/
+}
+/* --- Belajar Mode (dark green) --- */
+body.learn-mode .card-front {
+  color: #D1FAE5;
+  background: #064E3B;
+  border: 2px solid #10B981;
+}
+body.learn-mode .card-back {
+  color: #ECFDF5;
+  background: #022C22;
+  border: 2px solid #34D399;
+  transform: rotateY(180deg);
+}
+
+/* Belajar Mode (learn-mode) */
+body.learn-mode {
+  background: linear-gradient(135deg, #022C22, #064E3B); /* dark green elegan */
+  color: #D1FAE5;
+}
+
+/* Relax Mode (relax-mode) */
+body.relax-mode {
+ /* background: linear-gradient(135deg, #111827, #1F2937); */
+ background: linear-gradient(135deg,#1a1a1a,#444);
+  color: #E5E7EB;
+}
+
+/* --- Relax Mode (dark gray) --- */
+body.relax-mode .card-front {
+  color: #E5E7EB;           /* abu terang untuk teks */
+  background: #2C2C2C;      /* abu gelap, front */
+  border: 2px solid #FFFFFF; /* putih elegan */
+}
+
+body.relax-mode .card-back {
+  color: #E5E7EB;
+  background: #262626;      /* abu gelap sedikit lebih gelap dari front */
+  border: 2px solid #FFFFFF; /* putih tetap elegan */
+  transform: rotateY(180deg);
+}
+
+
+.switch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  width: 50px;
+  height: 25px;
+ background: #10B981;        /* hijau emerald saat ON */
+  border-radius: 999px;
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 19px;
+  height: 19px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+input:checked + .slider {
+  background: #374151;
+  
+}
+
+input:checked + .slider::before {
+  transform: translateX(25px);
+}
+
+.label-text {
+  color: #E5E7EB;             /* abu muda */
+  font-size: 14px;
+}
+
+/* posisi random biar mirip kartu tumpuk */
+.card:nth-child(1){ transform:rotate(0deg); }
+.card:nth-child(2){ transform:rotate(10deg); }
+.card:nth-child(3){ transform:rotate(12deg); }
+.card:nth-child(4){ transform:rotate(14deg); }
+.card:nth-child(5){ transform:rotate(16deg); }
+
+.card.active{ z-index:10; transform:rotate(0deg) scale(1); }
+.card.out{ transform:translateX(-360px) rotate(-20deg); opacity:0; z-index:11; }
+
+.card.outSkip{ transform:translateX(360px) rotate(20deg); opacity:1; z-index:11; }
+.card.outSkip2{ transform: rotate(var(--final-rot)) scale(1) translateY(0); opacity:1; }
+
+button {
+  margin-top:30px;
+  padding:10px 18px;
+  border:none;
+  border-radius:8px;
+  background:#e63946;
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+  transition: opacity 0.6s ease;
+}
+
+/* default hidden */
+button.hidden {
+  opacity: 0;
+  pointer-events: none; /* biar ga bisa diklik meski belum disable */
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.card.thank-you {
+opacity: 0;
+transform: scale(0.8);
+transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+.card.thank-you.show {
+opacity: 1;
+transform: scale(1);
+}@keyframes shuffleStack {
+0%   { transform: rotate(0deg) scale(0.3) translateY(-20px); opacity:1; }
+50%  { transform: rotate(8deg) scale(1.05) translateY(10px); opacity:1; }
+100% { transform: rotate(var(--final-rot)) scale(1) translateY(0); opacity:1; }
+}
+
+@keyframes shuffleStack2 {
+0%   { transform: rotate(0deg) scale(0) translateY(0px); opacity:0; }
+
+100% { transform: rotate(var(--final-rot)) scale(1) translateY(0); opacity:1; }
+}
+
+.card.shuffle {
+animation: shuffleStack 0.8s ease-in-out forwards;
+}
+.card.shuffle2 {
+animation: shuffleStack2 0.5s ease-in-out forwards;
+}
+
+#categoryInfo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 80px;
+  margin-top: 0px;
+
+  opacity: 0; /* awalnya transparan */
+}
+
+/* animasi fade in */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+#categoryInfo.show {
+  animation: fadeIn 0.6s ease forwards;
+}
+
+#categoryTitle {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-align: center;
+  color: #fff;
+  border: 2px solid #e63946;
+  border-radius: 10px;
+  padding: 5px 50px;
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: none; /* awalnya sembunyi */
+}
+
+#cardCount {
+  position: relative;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #fff;
+  border: 2px solid #e63946;
+  padding: 5px 15px;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.3);
+  display: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+#minusAnim {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #e63946;
+  font-weight: 700;
+  display: none;
+}
+
+#minusAnim.show {
+  display: block;
+  animation: floatUp 0.6s ease forwards;
+}
+
+@keyframes floatUp {
+  0% { opacity:1; transform: translate(-50%,0); }
+  100% { opacity:0; transform: translate(-50%,-30px); }
+}
+
+/* Blur background */
+.blur-bg {
+  filter: blur(5px);
+  transition: filter 0.3s ease;
+}
+
+/* Optional: class untuk hilang halus */
+.blur-bg.fade-out {
+  filter: blur(0);
+}
+
+/* Modal */
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background: rgba(0,0,0,0.4);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 999;
+}
+
+.modal.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  background: #2C2C2C;
+  padding: 20px;
+  border-radius: 10px;
+  border: solid 2px white;
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+
+.modal.show .modal-content {
+  transform: scale(1);
+}
+
+.modeOption {
+  margin: 5px; 
+  padding: 10px 20px; 
+  border: none;
+  border-radius: 6px; 
+  cursor: pointer;
+}
+
+.modeOption.active {
+  background: gold;
+  font-weight: bold;
+}
+
+#btnGroupKelolaDua.show{
+  animation: scaleUp 0.4s forwards;
+}
+
+#btnGroupKelolaDua.show2{
+  animation: scaleUp2 0.4s forwards;
+}
+@keyframes scaleUp{
+  0%{
+    transform: scale(0);
+  }
+  100%{
+    transform: scale(1);
+  }
+}
+@keyframes scaleUp2{
+  0%{
+    transform: scale(0);
+  }
+  100%{
+    transform: scale(1);
+  }
+}
+
+button.jiCareBtn {
+      margin: 20px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #0077ff;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button.offJiCare {
+      background: gray;
+    }
+    #countdownJiCare {
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+    }
+    /* Overlay untuk disable body */
+    #overlayJiCare {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgb(46,46,46);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #ffffff;
+      z-index: 9999;
+    }
